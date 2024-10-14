@@ -1,3 +1,5 @@
+import os from "os";
+
 const main = async () => {
   // Get username from args
   const args = process.argv.slice(2);
@@ -15,6 +17,10 @@ const main = async () => {
     process.exit();
   });
 
+  let currentDirname = os.homedir();
+
+  console.log(`You are currently in ${currentDirname}`);
+
   process.stdin.on("data", (data) => {
     if (data.toString().startsWith(".exit")) {
       process.kill(process.pid, "SIGINT");
@@ -22,7 +28,13 @@ const main = async () => {
     }
   });
 
-  process.stdin.on("error", (err) => console.error(err));
+  process.stdin.on("data", (data) => {
+    console.log(`You are currently in ${currentDirname}`);
+  });
+
+  process.stdin.on("data", (data) => {});
+
+  process.stdin.on("error", (err) => console.log("Invalid input"));
   process.stdin.on("end", () => console.log("ended"));
 };
 
